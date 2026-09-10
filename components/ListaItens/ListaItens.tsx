@@ -34,11 +34,15 @@ export const DATA: ProdutoItem[] = [
   },
 ];
 
-export default function ListaItens() {
+interface ListaItensProps {
+  produtos: ProdutoItem[];
+  // TODO(aluno): receber via props a lista real de produtos (iniciando a partir de DATA ou de dados persistidos em AsyncStorage) e funções de adicionar/remover/alternar-comprado.
+}
+export default function ListaItens({ produtos }: ListaItensProps) {
   const [active, setActive] = useState("presentes");
 
   // TODO(aluno): usar este estado para guardar a lista real de produtos (iniciando a partir de DATA ou de dados persistidos em AsyncStorage) e passar funções de adicionar/remover/alternar-comprado para Form e ProdutoListaItem.
-  const [produtos, setProdutos] = useState<ProdutoItem[]>([]);
+  //const [produtos, setProdutos] = useState<ProdutoItem[]>([]);
 
   function alterarActiveParaPresentes() {
     setActive("presentes");
@@ -96,7 +100,7 @@ export default function ListaItens() {
       {/* Lista de itens */}
       {/* TODO(aluno): filtrar DATA/produtos de acordo com "active" (produto.comprado === false para "presentes", === true para "comprados") antes de passar para a FlatList. */}
       <FlatList<ProdutoItem>
-        data={DATA}
+        data={produtos}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
         renderItem={(linha) => <ProdutoListaItem produto={linha.item} />}
