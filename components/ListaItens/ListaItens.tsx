@@ -36,8 +36,11 @@ export const DATA: ProdutoItem[] = [
 
 interface ListaItensProps {
   produtos: ProdutoItem[];
-  // TODO(aluno): receber via props a lista real de produtos (iniciando a partir de DATA ou de dados persistidos em AsyncStorage) e funções de adicionar/remover/alternar-comprado.
+  remover: (id: string) => void;
+  alternarComprado: (id:string) => void;
 }
+
+
 export default function ListaItens({ produtos }: ListaItensProps) {
   const [active, setActive] = useState("presentes");
 
@@ -90,7 +93,7 @@ export default function ListaItens({ produtos }: ListaItensProps) {
 
         <TouchableOpacity
           style={{ marginLeft: "auto" }}
-          onPress={() => {}}
+          onPress={() => {remover()}}
           // TODO(aluno): implementar a ação de "Limpar" (ex.: remover os itens marcados como comprados, atualizando o estado da lista).
         >
           <Text style={{ color: colors.textSecondary }}>Limpar</Text>
