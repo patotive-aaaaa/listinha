@@ -41,7 +41,7 @@ interface ListaItensProps {
 }
 
 
-export default function ListaItens({ produtos }: ListaItensProps) {
+export default function ListaItens({ produtos, remover, alternarComprado }: ListaItensProps) {
   const [active, setActive] = useState("presentes");
 
   // TODO(aluno): usar este estado para guardar a lista real de produtos (iniciando a partir de DATA ou de dados persistidos em AsyncStorage) e passar funções de adicionar/remover/alternar-comprado para Form e ProdutoListaItem.
@@ -111,3 +111,4 @@ export default function ListaItens({ produtos }: ListaItensProps) {
     </View>
   );
 }
+//AQUIIIIIIIIIIIIII

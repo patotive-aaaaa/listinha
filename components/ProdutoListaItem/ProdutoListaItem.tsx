@@ -6,9 +6,13 @@ import { colors } from "../colors";
 
 interface Props {
   produto: ProdutoItem;
+  remover: (id: string) => void;
+  alternarComprado: (id: string) => void;
+  limparComprados: () => void;
 }
 
-export default function ProdutoListaItem({ produto }: Props) {
+export default function ProdutoListaItem({ produto, remover,
+  alternarComprado, limparComprados }: Props) {
   const comprado = produto.comprado;
 
   return (

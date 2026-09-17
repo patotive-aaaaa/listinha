@@ -23,6 +23,7 @@ export default function Form({ adicionarProduto, produto, setProduto }: FormProp
         onChangeText={(texto) => setProduto(texto)}
         placeholder="O que você quer comprar?"
       />
+
       <TouchableOpacity
         style={styles.button}
         onPress={() => {adicionarProduto()}}
@@ -35,3 +36,4 @@ export default function Form({ adicionarProduto, produto, setProduto }: FormProp
   );
 
 }
+//AQUII TBMMMMM
