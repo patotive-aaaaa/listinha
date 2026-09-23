@@ -38,14 +38,17 @@ interface ListaItensProps {
   produtos: ProdutoItem[];
   remover: (id: string) => void;
   alternarComprado: (id:string) => void;
+  limparItens: (comprados: boolean) => void;
 }
 
 
-export default function ListaItens({ produtos, remover, alternarComprado }: ListaItensProps) {
+export default function ListaItens({ produtos, remover, alternarComprado, limparItens }: ListaItensProps) {
   const [active, setActive] = useState("presentes");
 
-  // TODO(aluno): usar este estado para guardar a lista real de produtos (iniciando a partir de DATA ou de dados persistidos em AsyncStorage) e passar funções de adicionar/remover/alternar-comprado para Form e ProdutoListaItem.
-  //const [produtos, setProdutos] = useState<ProdutoItem[]>([]);
+    const produtosFiltrados = produtos.filter((produto) =>
+    active === "comprados" ? produto.comprado : !produto.comprado
+  );
+
 
   function alterarActiveParaPresentes() {
     setActive("presentes");
@@ -93,20 +96,23 @@ export default function ListaItens({ produtos, remover, alternarComprado }: List
 
         <TouchableOpacity
           style={{ marginLeft: "auto" }}
-          onPress={() => {remover()}}
-          // TODO(aluno): implementar a ação de "Limpar" (ex.: remover os itens marcados como comprados, atualizando o estado da lista).
+          onPress={() => limparItens(active === "comprados")}
         >
           <Text style={{ color: colors.textSecondary }}>Limpar</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Lista de itens */}
-      {/* TODO(aluno): filtrar DATA/produtos de acordo com "active" (produto.comprado === false para "presentes", === true para "comprados") antes de passar para a FlatList. */}
-      <FlatList<ProdutoItem>
-        data={produtos}
+           <FlatList<ProdutoItem>
+        data={produtosFiltrados}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
-        renderItem={(linha) => <ProdutoListaItem produto={linha.item} />}
+        renderItem={({ item }) => (
+          <ProdutoListaItem
+            produto={item}
+            remover={remover}
+            alternarComprado={alternarComprado}
+          />
+        )}
       />
     </View>
   );

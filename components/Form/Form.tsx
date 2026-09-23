@@ -1,39 +1,35 @@
-import { Text, TextInput, TouchableOpacity, View} from "react-native";
-import React, { useState, useEffect } from 'react';
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useState } from "react";
 import { styles } from "./styles";
 import { Check } from "lucide-react";
 import { colors } from "../colors";
-import { ProdutoItem } from "../../interfaces/ProdutoItem";
-
 
 interface FormProps {
-  adicionarProduto: () => void;
-  produto: string;
-  setProduto: (produto: string) => void;
+  onAdicionar: (nome: string) => void;
 }
 
-export default function Form({ adicionarProduto, produto, setProduto }: FormProps) {
+export default function Form({ onAdicionar }: FormProps) {
+  const [texto, setTexto] = useState("");
 
+  function handleAdicionar() {
+    if (texto.trim() === "") return;
+    onAdicionar(texto);
+    setTexto(""); // limpa o campo
+  }
 
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        value={produto}
-        onChangeText={(texto) => setProduto(texto)}
+        value={texto}
+        onChangeText={setTexto}
         placeholder="O que você quer comprar?"
       />
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {adicionarProduto()}}
-        // TODO(aluno): ao tocar, adicionar um novo produto à lista (ex.: chamando uma função recebida via props que atualiza o estado da lista em ListaItens/App).
-      >
+      <TouchableOpacity style={styles.button} onPress={handleAdicionar}>
         <Check color={colors.surface} size={16} />
         <Text style={styles.buttonText}>Adicionar</Text>
       </TouchableOpacity>
     </View>
   );
-
 }
-//AQUII TBMMMMM
