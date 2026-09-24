@@ -60,7 +60,6 @@ export default function ListaItens({ produtos, remover, alternarComprado, limpar
 
   return (
     <View style={styles.container}>
-      {/* Filtro */}
       <View style={styles.topBar}>
         <TouchableOpacity
           style={styles.buttonTopBar}
@@ -117,4 +116,3 @@ export default function ListaItens({ produtos, remover, alternarComprado, limpar
     </View>
   );
 }
-//AQUIIIIIIIIIIIIII

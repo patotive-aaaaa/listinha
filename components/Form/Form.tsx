@@ -14,7 +14,7 @@ export default function Form({ onAdicionar }: FormProps) {
   function handleAdicionar() {
     if (texto.trim() === "") return;
     onAdicionar(texto);
-    setTexto(""); // limpa o campo
+    setTexto(""); 
   }
 
   return (
