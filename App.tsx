@@ -43,15 +43,15 @@ export default function App() {
   }, [lista, carregado]);
 
   function adicionarProduto(nome: string) {
-    const nomeLimpo = nome.trim();
-    if (nomeLimpo === "") return;
+    // const nomeLimpo = nome.trim();
+    // if (nomeLimpo === "") return;
 
-    const novoProduto: ProdutoItem = {
-      id: Date.now().toString() + Math.random().toString(36).slice(2),
-      nome: nomeLimpo,
-      comprado: false,
-    };
-    setLista((atual) => [...atual, novoProduto]);
+    // const novoProduto: ProdutoItem = {
+    //   id: Date.now().toString() + Math.random().toString(36).slice(2),
+    //   nome: nomeLimpo,
+    //   comprado: false,
+    // };
+    // setLista((atual) => [...atual, novoProduto]);
   }
 
   function removerProduto(id: string) {
