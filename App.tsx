@@ -5,69 +5,54 @@ import Form from "./components/Form/Form";
 import Header from "./components/Header/Header";
 import { colors } from "./components/colors";
 import { useState, useEffect } from "react";
-import { ProdutoItem } from "./interfaces/ProdutoItem";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import ListaItens, { DATA } from "./components/ListaItens/ListaItens";
-
-const CHAVE_STORAGE = "@minha_lista_compras";
+import ListaItens from "./components/ListaItens/ListaItens";
+import {
+  Produto, criarProduto, atualizarProduto,
+  removerProduto, removerPorStatus, observarProdutos,
+} from "./produtos";
 
 export default function App() {
-  const [lista, setLista] = useState<ProdutoItem[]>([]);
-  const [carregado, setCarregado] = useState(false);
+  const [lista, setLista] = useState<Produto[]>([]);
 
   useEffect(() => {
-    async function carregar() {
-      try {
-        const json = await AsyncStorage.getItem(CHAVE_STORAGE);
-        setLista(json !== null ? JSON.parse(json) : DATA);        
-      } catch (error) {
-        console.log("Erro ao carregar produtos", error);
-      } finally {
-        setCarregado(true);
-      }
-    }
-    carregar();
+    const pararDeObservar = observarProdutos(setLista);
+    return pararDeObservar;
   }, []);
 
-  useEffect(() => {
-    if (!carregado) return; 
-
-    async function salvar(novaLista: ProdutoItem[]) {
-      try {
-        await AsyncStorage.setItem(CHAVE_STORAGE, JSON.stringify(novaLista));
-      } catch (error) {
-        console.log("Erro ao salvar produtos", error);
-      }
+  async function adicionarProduto(nome: string) {
+    const nomeLimpo = nome.trim();
+    if (nomeLimpo === "") return;
+    try {
+      await criarProduto(nomeLimpo);
+    } catch (error) {
+      console.log("Erro ao criar produto", error);
     }
-    salvar(lista);
-  }, [lista, carregado]);
-
-  function adicionarProduto(nome: string) {
-    // const nomeLimpo = nome.trim();
-    // if (nomeLimpo === "") return;
-
-    // const novoProduto: ProdutoItem = {
-    //   id: Date.now().toString() + Math.random().toString(36).slice(2),
-    //   nome: nomeLimpo,
-    //   comprado: false,
-    // };
-    // setLista((atual) => [...atual, novoProduto]);
   }
 
-  function removerProduto(id: string) {
-    setLista((atual) => atual.filter((item) => item.id !== id));
+  async function remover(id: string) {
+    try {
+      await removerProduto(id);
+    } catch (error) {
+      console.log("Erro ao remover produto", error);
+    }
   }
 
-  function alternarComprado(id: string) {
-    setLista((atual) =>
-      atual.map((item) =>
-        item.id === id ? { ...item, comprado: !item.comprado } : item
-      )
-    );
+  async function alternarComprado(id: string) {
+    const produto = lista.find((item) => item.id === id);
+    if (!produto) return;
+    try {
+      await atualizarProduto(id, produto.nome, !produto.comprado);
+    } catch (error) {
+      console.log("Erro ao atualizar produto", error);
+    }
   }
 
-  function limparItens(comprados: boolean) {
-    setLista((atual) => atual.filter((item) => item.comprado !== comprados));
+  async function limparItens(comprados: boolean) {
+    try {
+      await removerPorStatus(comprados);
+    } catch (error) {
+      console.log("Erro ao limpar itens", error);
+    }
   }
 
   return (
@@ -78,7 +63,7 @@ export default function App() {
         <Form onAdicionar={adicionarProduto} />
         <ListaItens
           produtos={lista}
-          remover={removerProduto}
+          remover={remover}
           alternarComprado={alternarComprado}
           limparItens={limparItens}
         />
